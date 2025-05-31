@@ -6,3 +6,7 @@ This example demonstrates:
 
 
 In the use's example, I enable two leds to show their correct operation.
+
+```c
+int main() { return 0; }
+```

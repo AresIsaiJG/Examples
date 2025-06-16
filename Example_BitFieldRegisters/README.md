@@ -1,99 +1,83 @@
 # Bit-Field y estructuras: Explicación
-Una estructura es una zona de memoria continua que puede reservar varias variables de diferentes tipos de datos, como se muestra a continuación:
+## Recordatorio de estructuras
+
+Una estructura es una zona de memoria continua que puede reservar variables de diferentes tipos de datos, como se muestra a continuación:
 
 ```c
 struct Ejemplo_Estructura
 {
   uint8_t A;
   uint16_t B;
-  uint32_t c;
+  uint32_t C;
   uint64_t D;
   char E[5];
   float F;
   bool G;
   struct Estructura_Interna;
+
 };
 ```
 
-```c
- /**
-  * Example of use.
-*/
- typedef struct
- {
-     _IOb            Bit0:1;            /**< Bit 0 from Register */
-     ReserBitField   NotUsed1:31;       /**< Bit 1:31 from Register */
- 
- }REGx_1BitInputOutputStructBitField;
-```
-* It demonstrates the use of unions to access a record by bit field or by accessing the entire register. 
-```c
- /**
-  * Example of use.
-*/
- typedef union
- {
-     REGx_1BitInputOutputStructBitField      RegBits;        /**< Write-Read in one bit of the register. Used 0-0 bits */
-     _IO                                     RegComplete;    /**< Write-Read in all the register */
- 
- }REGx_1BitInputOutputUnion;
-```
-* It demonstrates the use of structures to declare multiple register and how to access them.
-```c
- /**
-  * Structure used to define GPIO Registers.
-*/
- typedef struct
- {
-     ReserMemoLoca                  Mem0[255];  /**< Reserved from 0x3F8 - 0x000 */
-     REGx_8BitsInputOutputUnion     DATA;       /**< Offset: 0x3FC */
-     REGx_8BitsInputOutputUnion     DIR;        /**< Offset: 0x400 */
-     REGx_8BitsInputOutputUnion     IS;         /**< Offset: 0x404 */
-     REGx_8BitsInputOutputUnion     IBE;        /**< Offset: 0x408 */
-     REGx_8BitsInputOutputUnion     IEV;        /**< Offset: 0x40C */
-     REGx_9BitsInputOutputUnion     IM;         /**< Offset: 0x410 */
-     REGx_9BitsInputOutputUnion     RIS;        /**< Offset: 0x414 */
-     REGx_9BitsInputOutputUnion     MIS;        /**< Offset: 0x418 */
-     REGx_9BitsInputOutputUnion     ICR;        /**< Offset: 0x41C */
-     REGx_8BitsInputOutputUnion     AFSEL;      /**< Offset: 0x420 */
-     ReserMemoLoca                  Mem1[55];   /**< Reserved from 0x4FC - 0x424 */
-     REGx_8BitsInputOutputUnion     DR2R;       /**< Offset: 0x500 */
-     REGx_8BitsInputOutputUnion     DR4R;       /**< Offset: 0x504 */
-     REGx_8BitsInputOutputUnion     DR8R;       /**< Offset: 0x508 */
-     REGx_8BitsInputOutputUnion     ODR;        /**< Offset: 0x50C */
-     REGx_8BitsInputOutputUnion     PUR;        /**< Offset: 0x510 */
-     REGx_8BitsInputOutputUnion     PDR;        /**< Offset: 0x514 */
-     REGx_8BitsInputOutputUnion     SLR;        /**< Offset: 0x518 */
-     REGx_8BitsInputOutputUnion     DEN;        /**< Offset: 0x51C */
-     _IO                            LOCK;       /**< Offset: 0x520 */
-     REGx_8BitsInputOutputUnion     CR;         /**< Offset: 0x524 */
-     REGx_8BitsInputOutputUnion     AMSEL;      /**< Offset: 0x528 */
-     REGx_4FieldInputOutputUnion    PCTL;       /**< Offset: 0x52C */
-     REGx_8BitsInputOutputUnion     ADCCTL;     /**< Offset: 0x530 */
-     REGx_8BitsInputOutputUnion     DMACTL;     /**< Offset: 0x534 */
-     REGx_1BitInputOutputUnion      SI;         /**< Offset: 0x538 */
-     REGx_8BitsInputOutputUnion     DR12R;      /**< Offset: 0x53C */
-     REGx_4BitsWakeGpioIOUnion      WAKEPEN;    /**< Offset: 0x540 */
-     REGx_4BitsWakeGpioIOUnion      WAKELVL;    /**< Offset: 0x544 */
-     REGx_4BitsWakeGpioIUnion       WAKESTAT;   /**< Offset: 0x548 */
-     ReserMemoLoca                  Mem2[669];  /**< Reserved from 0xFBC - 0x54C */
-     REGx_1BitPpGpioUnion           PP;         /**< Offset: 0xFC0 */
-     REGx_2FieldPcGpioUnion         PC;         /**< Offset: 0xFC4 */
-     ReserMemoLoca                  Mem3[2];    /**< Reserved from 0xFCC - 0xFC8 */
-     REGx_8BitsInputOnlyUnion       PeriphID4;  /**< Offset: 0xFD0 */
-     REGx_8BitsInputOnlyUnion       PeriphID5;  /**< Offset: 0xFD4 */
-     REGx_8BitsInputOnlyUnion       PeriphID6;  /**< Offset: 0xFD8 */
-     REGx_8BitsInputOnlyUnion       PeriphID7;  /**< Offset: 0xFDC */
-     REGx_8BitsInputOnlyUnion       PeriphID0;  /**< Offset: 0xFE0 */
-     REGx_8BitsInputOnlyUnion       PeriphID1;  /**< Offset: 0xFE4 */
-     REGx_8BitsInputOnlyUnion       PeriphID2;  /**< Offset: 0xFE8 */
-     REGx_8BitsInputOnlyUnion       PeriphID3;  /**< Offset: 0xFEC */
-     REGx_8BitsInputOnlyUnion       PCellID0;   /**< Offset: 0xFF0 */
-     REGx_8BitsInputOnlyUnion       PCellID1;   /**< Offset: 0xFF4 */
-     REGx_8BitsInputOnlyUnion       PCellID2;   /**< Offset: 0xFF8 */
-     REGx_8BitsInputOnlyUnion       PCellID3;   /**< Offset: 0xFFC */
- 
- }GPIOx_TypeDef;
-```
+La estructura nos indica que se deben reservar 11 localidades de memoria continúa con una palabra de 64 bits, como mínimo, para almacenar todas las variables definidas
+(por ser un ejemplo, no se sabe la cantidad de localidades de memoria a reservar para la estructura).
 
-In the use's example, I enable two leds to show their correct operation.
+## Explicación básica de bit-field
+
+Ahora bien, un bit-field es, literalmente, un campo o un intervalo de bits, como su traducción del inglés lo indica.
+Generalmente los nuevos campos de bits son reservados en una misma localidad de memoria, siempre y cuando se respete la longitud de bits definidos con los campos que se van declarando.
+Esto quiere decir que para una variable "x", ahora se pueden fraccionar sus bits, a fin de optimizar el uso de memoria. 
+
+
+Cómo muestra de estó, se tiene el siguiente ejemplo:
+
+```c
+/**
+* Reutilizando la variable uint8_t A.
+*/
+struct BitField_A
+{
+  uint8_t A_UnBit : 1; //Se reserva un bit de los 8 que se declaran para A, en este caso el menos significativo (bit 0).
+  uint8_t A_DosBit : 2; //Se reservan dos bits de los 7 que sobran en A, en este caso del bit 1 al 2 (bit 1:2).
+  uint8_t A_CincoBit : 5; //Se reservan los bits sobran en A, en este caso del bit 3 al 7 (bit 3:7).
+
+};
+```
+Con esto en mente, la estructura **BitField_A** simplemente contiene una variable "A" de tipo *uint8_t* (nos interesa resaltar que son ***8 bits*** los reservados en la estructura), es decir, en la nueva estructura reservamos una sola variable de 8 bits, para los cuales definimos una cantidad específica de bits con cada nueva variable, a través de **" : x_NúmerodeBits"**. 
+
+## Puntos importantes a destacar:
+
+- Los " : " sirven para indicar que se hará uso de una *n* cantidad de bits.  
+- El uso de bit-field solo se implementa con ***estructuras***, debido a la reserva de memoria continua.
+- El bit-Field permite ahorrar recursos, ya que hace más eficiente el uso de memoria.
+- Siempre se debe respetar la relación entre el tipo de dato y la cantidad de bits que se ocupan.
+- Por lo regular se ocupa con tipos de dato *int*, *uint*, *char*.
+
+## Ejemplo de uso
+
+Vamos a suponer que se quiere optimizar el uso de memoria en la siguiente estructura:
+
+```c
+struct Ejemplo_Estructura
+{
+  bool A; //Una localidad reservada para ocupar 1 bit
+  uint8_t B; //Una localidad reservada para ocupar 8 bits
+  uint16_t C; //Una localidad reservada para ocupar 16 bits
+  uint32_t D; //Una localidad reservada para ocupar 32 bits
+
+};
+```
+En total son 4 localidades reservadas; sin embargo, no todos los bits de todas las variables se utilizan, de modo que *C* solo ocupa 5 bits y *D* ocupa 16 bits.
+En otras palabras, necesitamos 30 bits en total.
+Bajo esta idea, podemos utiliziar bit-field para optimizar el uso de localidades, como se muestra a continuación.
+
+```c
+struct Ejemplo
+{
+  uint32_t A : 1; //Solo se usa el bit menos significativo (bit 0).
+  uint32_t B : 8; //Se reserva del bit 1 al 8 (bit 1:8).
+  uint32_t C : 5; //Se reserva del bit 9 al 13 (bit 9:13).
+  uint32_t D : 16; //Se reserva del bit 1 al 8 (bit 14:30).
+
+};
+```
+Con la estructura Ejemplo logramos reducir de 4 a 1 las localidades de memoria utilizadas; además, se redujo el uso de bits que algunas variables no ocupaban.

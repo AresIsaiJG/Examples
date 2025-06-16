@@ -1,18 +1,18 @@
-# Bit-Field y estructuras: Explicación
+# Bit-Field, uniones y estructuras: Explicación
 ## Recordatorio de estructuras
 
 Una estructura es una zona de memoria continua que puede reservar variables de diferentes tipos de datos, como se muestra a continuación:
 
 ```c
-struct Ejemplo_Estructura
+struct EstructuraBasica
 {
   uint8_t A;
   uint16_t B;
   uint32_t C;
-  uint64_t D;
-  char E[5];
-  float F;
-  bool G;
+  bool D;
+  uint64_t E;
+  char F[5];
+  float G;
   struct Estructura_Interna;
 
 };
@@ -44,7 +44,7 @@ struct BitField_A
 ```
 Con esto en mente, la estructura **BitField_A** simplemente contiene una variable "A" de tipo *uint8_t* (nos interesa resaltar que son ***8 bits*** los reservados en la estructura), es decir, en la nueva estructura reservamos una sola variable de 8 bits, para los cuales definimos una cantidad específica de bits con cada nueva variable, a través de **" : x_NúmerodeBits"**. 
 
-## Puntos importantes a destacar:
+### Puntos importantes a destacar:
 
 - Los " : " sirven para indicar que se hará uso de una *n* cantidad de bits.  
 - El uso de bit-field solo se implementa con ***estructuras***, debido a la reserva de memoria continua.
@@ -52,32 +52,75 @@ Con esto en mente, la estructura **BitField_A** simplemente contiene una variabl
 - Siempre se debe respetar la relación entre el tipo de dato y la cantidad de bits que se ocupan.
 - Por lo regular se ocupa con tipos de dato *int*, *uint*, *char*.
 
-## Ejemplo de uso
+### Ejemplo de uso
 
 Vamos a suponer que se quiere optimizar el uso de memoria en la siguiente estructura:
 
 ```c
-struct Ejemplo_Estructura
+struct Ejemplo_EstructuraBitField
 {
-  bool A; //Una localidad reservada para ocupar 1 bit
-  uint8_t B; //Una localidad reservada para ocupar 8 bits
-  uint16_t C; //Una localidad reservada para ocupar 16 bits
-  uint32_t D; //Una localidad reservada para ocupar 32 bits
+  uint8_t A; //Una localidad reservada para ocupar 8 bits
+  uint16_t B; //Una localidad reservada para ocupar 16 bits
+  uint32_t C; //Una localidad reservada para ocupar 32 bits
+  bool D; //Una localidad reservada para ocupar 1 bit
 
 };
 ```
-En total son 4 localidades reservadas; sin embargo, no todos los bits de todas las variables se utilizan, de modo que *C* solo ocupa 5 bits y *D* ocupa 16 bits.
+En total son 4 localidades reservadas; sin embargo, no todos los bits de todas las variables se utilizan, de modo que *B* solo ocupa 5 bits y *C* ocupa 16 bits.
 En otras palabras, necesitamos 30 bits en total.
 Bajo esta idea, podemos utiliziar bit-field para optimizar el uso de localidades, como se muestra a continuación.
 
 ```c
-struct Ejemplo
+struct Ejemplo_EstructuraBitField
 {
-  uint32_t A : 1; //Solo se usa el bit menos significativo (bit 0).
-  uint32_t B : 8; //Se reserva del bit 1 al 8 (bit 1:8).
-  uint32_t C : 5; //Se reserva del bit 9 al 13 (bit 9:13).
-  uint32_t D : 16; //Se reserva del bit 1 al 8 (bit 14:30).
+  uint32_t A : 8; //Se reserva del bit 0 al 7 (bit 0:7).
+  uint32_t B : 5; //Se reserva del bit 8 al 12 (bit 8:12).
+  uint32_t C : 16; //Se reserva del bit 13 al 29 (bit 13:29).
+  uint32_t D : 1; //Solo se usa el bit 30 (bit 30).
 
 };
 ```
 Con la estructura Ejemplo logramos reducir de 4 a 1 las localidades de memoria utilizadas; además, se redujo el uso de bits que algunas variables no ocupaban.
+De este modo, ahora podemos definir en EstructuraBasica:
+
+```c
+struct EstructuraBasica
+{
+  struct Ejemplo_EstructuraBitField Nueva_BitField; //Contiene las variables A - D
+  uint64_t E;
+  char F[5];
+  float G;
+  struct Estructura_Interna;
+
+};
+```
+
+## Recordatorio de uniones
+Una unión permite declarar dos o más tipos de dato bajo una misma localidad de memoria, en donde la variable con el tipo de dato más grande es la que da la pauta de la cantidad de memoria a reservar.
+
+### Ejemplo de uso
+
+Supongamos que queremos utilizar dos variables en una misma localidad: A (tipo uint8_t) y B (tipo uint32_t).
+La unión nos permite realizar esto cómo se muestra a continuación:
+
+```c
+union Ejemplo
+{
+    uint32_t B; // 32 bits
+    uint8_t A;  // 8 bits (ocupa el byte menos significativo de B)
+
+};
+```
+Entonces, bajo está idea, podemos utilizarla a través de:
+
+```c
+//Código anterior
+  union Ejemplo Union1; //Declaramos la unión
+  
+  Union1.B = 0; // Pone todos los bits a 0: B = 0x00000000
+  Union1.A = 0xF1; // Modifica solo el byte menos significativo de B: B = 0x000000F1
+  Union1.B = 0xAF8; // Sobrescribe completamente los 32 bits: B = 0x00000AF8
+//Código posterior
+```
+
+Al final B fue sobreescrito con el último valor.

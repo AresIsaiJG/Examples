@@ -1,6 +1,20 @@
-# Example: Bit-Field, Unions and Structures to define Registers in C
-This example demonstrates:
-* The use of bit-field structures to access specific bits of a register. 
+# Bit-Field y estructuras: Explicación
+Una estructura es una zona de memoria continua que puede reservar varias variables de diferentes tipos de datos, como se muestra a continuación:
+
+```c
+struct Ejemplo_Estructura
+{
+  uint8_t A;
+  uint16_t B;
+  uint32_t c;
+  uint64_t D;
+  char E[5];
+  float F;
+  bool G;
+  struct Estructura_Interna;
+};
+```
+
 ```c
  /**
   * Example of use.

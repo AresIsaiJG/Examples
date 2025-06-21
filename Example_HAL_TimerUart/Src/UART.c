@@ -93,32 +93,32 @@ uint16_t USARTx_BaudRateGeneration(USART_TypeDef *, uint32_t, uint32_t);
 * 
 **********************************************************************/
 #if UARTx == 1
-void USART1_IRQHandler(void)
+void USART1_Handler(void)
 {
 	USARTx_InterrupFuntion(USART1);
 
 }
 #elif UARTx == 2
-void USART2_IRQHandler(void)
+void USART2_Handler(void)
 {
 	USARTx_InterrupFuntion(USART2);
 
 }
 #elif UARTx == 3
-void USART3_IRQHandler(void)
+void USART3_Handler(void)
 {
 	USARTx_InterrupFuntion(USART3);
 
 }
 #elif UARTx == 4
-void UART4_IRQHandler(void)
+void UART4_Handler(void)
 {
 	USARTx_InterrupFuntion(UART4);
 
 }
 
 #elif UARTx == 5
-void LPUART1_IRQHandler(void)
+void LPUART1_Handler(void)
 {
 	USARTx_InterrupFuntion(LPUART1);
 
@@ -509,7 +509,7 @@ void USARTx_AsynConfig(USART_Config USART_Config, USART_TypeDef *USARTx_, GPIO_T
 	CLEAR_BIT(USARTx_->CR1, (USART_ENABLE << UE_BIT) );
 	CLEAR_BIT(USARTx_->CR1, TXNEIE_FLAG|RXNEIE_FLAG);
 
-	NVIC_SetCFGR(USART_Config.USARTx_IRQ_IntNum, USART_Config.USARTx_IRQ_IntPri );
+	InterruptFuntion_Config(USART_Config.USARTx_IRQ_IntNum, USART_Config.USARTx_IRQ_IntPri );
 
 	SET_BIT(USARTx_->CR1, (USART_Config.USARTx_Over8 << OVER8_BIT) );
 

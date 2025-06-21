@@ -4,7 +4,7 @@
  * @Filename        :   main.c
  * @Author(s)       :   Isai J. Garcia
  * @Origin Date     :   01/02/2025
- * @Version         :   1.0.0
+ * @Version         :   1.0.1
  * @Compiler        :   GCC
  * @Target          :   TM4C1294NCPDT
  * @Notes           :   This software was design as a example of use of unions,
@@ -27,9 +27,6 @@
  * Copyright (c) 2025.
  * All rights reserved.
  *
- * This software is for student use and for research purposes only. It must not
- * be used for commercial purposes or to obtain any benefit of any kind. It can
- * only be modified by the developers.
  *
  ******************************************************************************
  */

@@ -1,12 +1,8 @@
-/*
- * TIMERx.c
- *
- *  Created on: 18 nov 2023
- *      Author: LIESE
- */
+/** @file TIMER.c
+*  @brief The implementation for HAL function of general TIMER module.
+*/
 
 #include "TIMER.h"
-#include "NVIC.h"
 
 extern int bandera;
 
@@ -97,7 +93,7 @@ void TIMERx_Config(TIMER_Config TIMER_Config, TIM_TypeDef *TIMERx_)
 
 	}
 
-	NVIC_SetCFGR(TIMER_Config.TIMERx_IRQ[0], TIMER_Config.TIMERx_IRQ[1]);
+	InterruptFuntion_Config(TIMER_Config.TIMERx_IRQ[0], TIMER_Config.TIMERx_IRQ[1]);
 
 	CLEAR_BIT(TIMERx_->CR1, (1<<TIMER_ENABLE));
 

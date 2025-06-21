@@ -1,0 +1,19 @@
+# Ignorar carpetas de proyectos o IDEs
+*.project
+*.cproject
+*.ioc
+.settings/
+Debug/
+Release/
+MX/
+.vscode/
+*.elf
+*.hex
+*.bin
+*.map
+
+# Archivos temporales
+*.log
+*.swp
+*.bak
+*~

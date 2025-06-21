@@ -1,13 +1,24 @@
 # Ejemplos de Firmware en C y C++
 
+
 ### 📁 notas/
 
-> Todos los códigos están escritos con enfoque didáctico. No están vinculados a un microcontrolador o entorno específico, pero pueden adaptarse fácilmente a STM32, PIC, AVR, entre otros.
+Este repositorio contiene ejemplos de descripción de Firmware para tarjetas: 
+* EK-TM4C1294XL
+* NUCLEO-F439ZI
+* NUCLEO-L452RE-P
 
 ## 💬 Licencia
 
-Este repositorio es de uso libre para fines educativos y personales.  
-Si deseas reutilizar parte del contenido para otros fines, por favor da crédito mencionando este repositorio.
+Este repositorio está protegido por una licencia personalizada.
+
+> © 2025 Ares Isai Jiménez García  
+> Todos los derechos reservados.
+
+El contenido de este repositorio es propiedad exclusiva del autor.  
+No se permite su copia, redistribución, modificación ni uso con fines comerciales o académicos sin autorización explícita y por escrito.
+
+Para más información o permisos, contacta al autor a través de su perfil de GitHub.
 
 ## 📧 Contacto
 
